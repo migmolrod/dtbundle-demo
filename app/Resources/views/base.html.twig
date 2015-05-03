@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}SgDatatablesBundle Demo Application{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/app/css/bootstrap.min.css') }}">
+            {#<link rel="stylesheet" href="{{ asset('bundles/app/css/jquery.dataTables.min.css') }}">#}
+            <link rel="stylesheet" href="{{ asset('bundles/app/css/dataTables.bootstrap.css') }}">
+        {% endblock %}
+        {% block head_javascripts %}
+            <script src="{{ asset('bundles/app/js/jquery.min.js') }}"></script>
+
+            <script src="{{ asset('bundles/app/js/moment-with-locales.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/jquery.dataTables.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/dataTables.bootstrap.min.js') }}"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block header %}
+            <header>
+                <div class="navbar navbar-default navbar-static-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="{{ path('homepage') }}">
+                                SgDatatablesBundle Demo Application
+                            </a>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                {% block header_navigation_links %}
+                                    <li>
+                                        <a href="{{ path('post') }}">
+                                            <i class="glyphicon glyphicon-th-list"></i> Post List
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="{{ path('fos_user_security_login') }}">
+                                            <i class="glyphicon glyphicon-log-in"></i> Login
+                                        </a>
+                                    </li>
+                                {% endblock %}
+
+                                {% if app.user %}
+                                    <li>
+                                        <a href="{{ path('fos_user_security_logout') }}">
+                                            <i class="glyphicon glyphicon-log-out"></i> Logout
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        {% endblock %}
+
+        <div class="container body-container">
+            {% block body %}
+                <div class="row">
+                    <div id="main" class="col-sm-9">
+                        {% block fos_user_content %}{% endblock fos_user_content %}
+                        {% block main %}{% endblock %}
+                    </div>
+
+                    <div id="sidebar" class="col-sm-3">
+                        {% block sidebar %}
+                            {% if app.user %}
+                                <div>
+                                    <a href="{{ path('post_new') }}" class="btn btn-lg btn-block btn-success">
+                                        <i class="glyphicon glyphicon-plus"></i> New Post
+                                    </a>
+                                </div>
+                                <hr />
+                            {% endif %}
+                            <div>
+                                <div class="well well-lg">
+                                    <p>
+                                        This is a <strong>demo application</strong> for the
+                                        <a href="https://github.com/stwe/DatatablesBundle">
+                                            SgDatatablesBundle
+                                        </a>.
+                                    </p>
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+
+        <hr />
+
+        {% block footer %}
+            <footer style="text-align: center">
+                <div class="container">
+                    <div class="row">
+                        <div id="footer-copyright" class="col-md-12">
+                            <p><small>&copy; {{ 'now'|date('Y') }} - stwe</small></p>
+                            <p><small>MIT License</small></p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        {% endblock %}
+
+        {% block foot_javascripts %}
+        {% endblock %}
+    </body>
+</html>
