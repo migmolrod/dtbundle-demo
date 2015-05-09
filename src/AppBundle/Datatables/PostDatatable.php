@@ -12,13 +12,16 @@ use Sg\DatatablesBundle\Datatable\View\Style;
  */
 class PostDatatable extends AbstractDatatableView
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getLineFormatter()
     {
-        $formatter = function($line){
-            $line["custom"] = $line["title"] . " published at " . $line["publishedAt"]->format("Y-m-d H:i:s");
+        $formatter = function($line) {
+            if ($this->container->get("security.authorization_checker")->isGranted("IS_AUTHENTICATED_FULLY")) {
+                $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository($this->getEntity());
+                $user = $this->container->get("security.token_storage")->getToken()->getUser();
+                $line["owner"] = $repository->find($line["id"])->isAuthor($user);
+            } else {
+                $line["owner"] = "Please Login";
+            }
 
             return $line;
         };
@@ -51,7 +54,7 @@ class PostDatatable extends AbstractDatatableView
 
         // the default settings, except "url"
         $this->ajax->setOptions(array(
-            "url" => $this->getRouter()->generate('post_results'),
+            "url" => $this->container->get("router")->generate("post_results"),
             "type" => "GET"
         ));
 
@@ -61,7 +64,7 @@ class PostDatatable extends AbstractDatatableView
             "dom" => "lfrtip", // default, but not used because "use_integration_options" = true
             "length_menu" => array(10, 25, 50, 100),
             "order_classes" => true,
-            "order" => array("column" => 0, "direction" => "asc"),
+            "order" => [[0, "asc"]],
             "order_multi" => true,
             "page_length" => 10,
             "paging_type" => Style::FULL_NUMBERS_PAGINATION,
@@ -121,8 +124,8 @@ class PostDatatable extends AbstractDatatableView
             ->add("title", "column", array(
                 "title" => "<span class='glyphicon glyphicon-book' aria-hidden='true'></span> Title",
             ))
-            ->add('custom', 'virtual', array(
-                'title' => "Custom Title"
+            ->add('owner', 'virtual', array(
+                'title' => "Your Post"
             ))
             ->add("authorEmail", "column", array(
                 "class" => "",

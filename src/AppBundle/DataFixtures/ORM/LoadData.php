@@ -25,7 +25,7 @@ class LoadData implements FixtureInterface
         $userAdmin = new User();
         $userAdmin->setUsername('admin');
         $userAdmin->setPlainPassword('admin');
-        $userAdmin->setEmail("test@randomemail.re");
+        $userAdmin->setEmail("admin@randomemail.re");
         $userAdmin->setEnabled(true);
         $userAdmin->setRoles(array('ROLE_ADMIN'));
         $manager->persist($userAdmin);
@@ -44,8 +44,12 @@ class LoadData implements FixtureInterface
             $post[$i] = new Post();
             $post[$i]->setTitle('Title ' . $i);
             $post[$i]->setContent($this->getPostContent());
-            $post[$i]->setVisible(rand(0,1));
-            $post[$i]->setAuthorEmail('test@randomemail.re');
+            $post[$i]->setVisible(rand(0, 1));
+            if (rand(0, 1)) {
+                $post[$i]->setAuthorEmail('admin@randomemail.re');
+            } else {
+                $post[$i]->setAuthorEmail('user@randomemail.re');
+            }
             $manager->persist($post[$i]);
         }
 
