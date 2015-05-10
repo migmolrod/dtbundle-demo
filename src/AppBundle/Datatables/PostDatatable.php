@@ -12,15 +12,25 @@ use Sg\DatatablesBundle\Datatable\View\Style;
  */
 class PostDatatable extends AbstractDatatableView
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getLineFormatter()
     {
         $formatter = function($line) {
+            $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository("AppBundle:Post");
+            $entity = $repository->find($line["id"]);
+
+            // see if a User is logged in
             if ($this->container->get("security.authorization_checker")->isGranted("IS_AUTHENTICATED_FULLY")) {
-                $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository($this->getEntity());
                 $user = $this->container->get("security.token_storage")->getToken()->getUser();
-                $line["owner"] = $repository->find($line["id"])->isAuthor($user);
+                // is the given User the author of this Post?
+                $line["owner"] = $entity->isAuthor($user); // render "true" or "false"
             } else {
-                $line["owner"] = "Please Login";
+                // render a twig template with login link
+                $line["owner"] = $this->container->get("templating")->render(":post:login_link.html.twig", array(
+                    "entity" => $repository->find($line["id"])
+                ));
             }
 
             return $line;
