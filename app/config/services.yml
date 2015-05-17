@@ -1,9 +1,15 @@
 services:
+    app.listener:
+        class: AppBundle\Listener\BlameableListener
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
     app.form.extension.novalidate:
         class: AppBundle\Form\Extension\NoValidateExtension
         tags:
             - { name: form.type_extension, alias: form }
-    sg_datatables.post:
+    app.datatable.post:
         class: AppBundle\Datatables\PostDatatable
         tags:
             - { name: sg.datatable.view }

@@ -23,7 +23,6 @@ class PostType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('visible')
-            ->add('authorEmail')
         ;
     }
     

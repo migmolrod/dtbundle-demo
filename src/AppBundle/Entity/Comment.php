@@ -6,10 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Comment
+ * Class Comment
  *
  * @ORM\Table()
  * @ORM\Entity
+ *
+ * @package AppBundle\Entity
  */
 class Comment
 {
@@ -54,7 +56,6 @@ class Comment
      * @var string
      *
      * @ORM\Column(type="string")
-     * @Assert\Email()
      */
     private $authorEmail;
 
@@ -62,7 +63,6 @@ class Comment
      * @var \datetime
      *
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
      */
     private $publishedAt;
 
@@ -77,7 +77,7 @@ class Comment
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -91,7 +91,7 @@ class Comment
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string 
      */
@@ -101,7 +101,7 @@ class Comment
     }
 
     /**
-     * Set comment
+     * Set comment.
      *
      * @param string $comment
      *
@@ -115,7 +115,7 @@ class Comment
     }
 
     /**
-     * Get comment
+     * Get comment.
      *
      * @return string 
      */
@@ -125,7 +125,7 @@ class Comment
     }
 
     /**
-     * Set post
+     * Set post.
      *
      * @param Post $post
      *
@@ -139,7 +139,7 @@ class Comment
     }
 
     /**
-     * Get post
+     * Get post.
      *
      * @return Post
      */

@@ -7,10 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Post
+ * Class Post
  *
  * @ORM\Table()
  * @ORM\Entity
+ *
+ * @package AppBundle\Entity
  */
 class Post
 {
@@ -35,6 +37,7 @@ class Post
      * @var text
      *
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      * @Assert\Length(
      *     min = "10",
      *     minMessage = "Post content is too short ({{ limit }} characters minimum)"
@@ -53,7 +56,6 @@ class Post
      * @var string
      *
      * @ORM\Column(type="string")
-     * @Assert\Email()
      */
     private $authorEmail;
 
@@ -61,7 +63,6 @@ class Post
      * @var \datetime
      *
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
      */
     private $publishedAt;
 

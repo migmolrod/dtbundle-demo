@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Class PostController
@@ -31,7 +32,7 @@ class PostController extends Controller
      */
     public function indexAction()
     {
-        $postDatatable = $this->get("sg_datatables.post");
+        $postDatatable = $this->get("app.datatable.post");
 
         return array(
             "datatable" => $postDatatable,
@@ -50,7 +51,7 @@ class PostController extends Controller
         /**
          * @var \Sg\DatatablesBundle\Datatable\Data\DatatableData $datatable
          */
-        $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("sg_datatables.post"));
+        $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("app.datatable.post"));
 
         return $datatable->getResponse();
     }
@@ -63,6 +64,7 @@ class PostController extends Controller
      * @Route("/", name="post_create")
      * @Method("POST")
      * @Template(":post:new.html.twig")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -111,6 +113,7 @@ class PostController extends Controller
      * @Route("/new", name="post_new")
      * @Method("GET")
      * @Template(":post:new.html.twig")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return array
      */
@@ -162,6 +165,7 @@ class PostController extends Controller
      * @Route("/{id}/edit", name="post_edit", options={"expose"=true})
      * @Method("GET")
      * @Template(":post:edit.html.twig")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return array
      */
@@ -213,6 +217,7 @@ class PostController extends Controller
      * @Route("/{id}", name="post_update")
      * @Method("PUT")
      * @Template(":post:edit.html.twig")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -251,6 +256,7 @@ class PostController extends Controller
      *
      * @Route("/{id}", name="post_delete")
      * @Method("DELETE")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

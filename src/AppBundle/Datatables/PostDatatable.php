@@ -18,7 +18,7 @@ class PostDatatable extends AbstractDatatableView
     public function getLineFormatter()
     {
         $formatter = function($line) {
-            $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository("AppBundle:Post");
+            $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository($this->getEntity());
             $entity = $repository->find($line["id"]);
 
             // see if a User is logged in
@@ -68,7 +68,7 @@ class PostDatatable extends AbstractDatatableView
             "type" => "GET"
         ));
 
-        // the default settings, except "class" and "use_integration_options"
+        // the default settings, except "responsive", "class", "individual_filtering" and "use_integration_options"
         $this->options->setOptions(array(
             "display_start" => 0,
             "dom" => "lfrtip", // default, but not used because "use_integration_options" = true
@@ -83,7 +83,7 @@ class PostDatatable extends AbstractDatatableView
             "search_delay" => 0,
             "state_duration" => 7200,
             "stripe_classes" => array(),
-            "responsive" => false,
+            "responsive" => true,
             "class" => Style::BOOTSTRAP_3_STYLE,
             "individual_filtering" => true,
             "use_integration_options" => true
