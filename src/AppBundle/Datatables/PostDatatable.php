@@ -85,7 +85,7 @@ class PostDatatable extends AbstractDatatableView
             "stripe_classes" => array(),
             "responsive" => false,
             "class" => Style::BOOTSTRAP_3_STYLE,
-            "individual_filtering" => false,
+            "individual_filtering" => true,
             "use_integration_options" => true
         ));
 
@@ -119,12 +119,13 @@ class PostDatatable extends AbstractDatatableView
                 "true_label" => "yes",
                 "false_label" => "no"
             ))
-            ->add("publishedAt", "timeago", array(
+            ->add("publishedAt", "datetime", array(
                 "class" => "",
                 "padding" => "",
-                "name" => "",
+                "name" => "daterange",
                 "orderable" => true,
-                "render" => "render_timeago",
+                "render" => "render_datetime",
+                "date_format" => "lll",
                 "searchable" => true,
                 "title" => "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> Published",
                 "type" => "",
