@@ -6,6 +6,9 @@ use AppBundle\Entity\Post;
 use AppBundle\Form\PostType;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,7 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class PostController extends Controller
 {
     /**
-     * Post datatable.
+     * Server side Post datatable.
      *
      * @Route("/", name="post")
      * @Method("GET")
@@ -32,10 +35,10 @@ class PostController extends Controller
      */
     public function indexAction()
     {
-        $postDatatable = $this->get("app.datatable.post");
+        $datatable = $this->get("app.datatable.server_side.post");
 
         return array(
-            "datatable" => $postDatatable,
+            "datatable" => $datatable,
         );
     }
 
@@ -51,9 +54,45 @@ class PostController extends Controller
         /**
          * @var \Sg\DatatablesBundle\Datatable\Data\DatatableData $datatable
          */
-        $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("app.datatable.post"));
+        $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("app.datatable.server_side.post"));
 
         return $datatable->getResponse();
+    }
+
+    /**
+     * Client side Post datatable.
+     *
+     * @Route("/cs", name="cs_post")
+     * @Method("GET")
+     * @Template(":post:index.html.twig")
+     *
+     * @return array
+     */
+    public function clientSideIndexAction()
+    {
+        $repository = $this->getDoctrine()->getRepository("AppBundle:Post");
+
+        $query = $repository->createQueryBuilder("p")
+            ->select("p, c")
+            ->join("p.comments", "c")
+            ->getQuery();
+
+        $results = $query->getArrayResult();
+
+        foreach ($results as $key => $value) {
+            $results[$key]["owner"] = "test";
+        }
+
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $datatable = $this->get("app.datatable.client_side.post");
+        $datatable->setData($serializer->serialize($results, "json"));
+
+        return array(
+            "datatable" => $datatable,
+        );
     }
 
     /**

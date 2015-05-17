@@ -6,45 +6,18 @@ use Sg\DatatablesBundle\Datatable\View\AbstractDatatableView;
 use Sg\DatatablesBundle\Datatable\View\Style;
 
 /**
- * Class PostDatatable
+ * Class PostClientSideDatatable
  *
  * @package AppBundle\Datatables
  */
-class PostDatatable extends AbstractDatatableView
+class PostClientSideDatatable extends AbstractDatatableView
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getLineFormatter()
-    {
-        $formatter = function($line) {
-            $repository = $this->container->get("doctrine.orm.entity_manager")->getRepository($this->getEntity());
-            $entity = $repository->find($line["id"]);
-
-            // see if a User is logged in
-            if ($this->container->get("security.authorization_checker")->isGranted("IS_AUTHENTICATED_FULLY")) {
-                $user = $this->container->get("security.token_storage")->getToken()->getUser();
-                // is the given User the author of this Post?
-                $line["owner"] = $entity->isAuthor($user); // render "true" or "false"
-            } else {
-                // render a twig template with login link
-                $line["owner"] = $this->container->get("templating")->render(":post:login_link.html.twig", array(
-                    "entity" => $repository->find($line["id"])
-                ));
-            }
-
-            return $line;
-        };
-
-        return $formatter;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildDatatableView()
     {
-        // the default settings, except "scroll_x"
+        // the default settings, except "scroll_x" and "server_side"
         $this->features->setFeatures(array(
             "auto_width" => true,
             "defer_render" => false,
@@ -57,15 +30,9 @@ class PostDatatable extends AbstractDatatableView
             "scroll_x" => true,
             "scroll_y" => "",
             "searching" => true,
-            "server_side" => true,
+            "server_side" => false,
             "state_save" => false,
             "delay" => 0
-        ));
-
-        // the default settings, except "url"
-        $this->ajax->setOptions(array(
-            "url" => $this->container->get("router")->generate("post_results"),
-            "type" => "GET"
         ));
 
         // the default settings, except "class", "individual_filtering" and "use_integration_options"
@@ -213,6 +180,6 @@ class PostDatatable extends AbstractDatatableView
      */
     public function getName()
     {
-        return "post_datatable";
+        return "post_client_side_datatable";
     }
 }
