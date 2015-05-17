@@ -44,7 +44,7 @@ class PostDatatable extends AbstractDatatableView
      */
     public function buildDatatableView()
     {
-        // the default settings
+        // the default settings, except "scroll_x"
         $this->features->setFeatures(array(
             "auto_width" => true,
             "defer_render" => false,
@@ -54,7 +54,7 @@ class PostDatatable extends AbstractDatatableView
             "ordering" => true,
             "paging" => true,
             "processing" => true,
-            "scroll_x" => false,
+            "scroll_x" => true,
             "scroll_y" => "",
             "searching" => true,
             "server_side" => true,
@@ -68,7 +68,7 @@ class PostDatatable extends AbstractDatatableView
             "type" => "GET"
         ));
 
-        // the default settings, except "responsive", "class", "individual_filtering" and "use_integration_options"
+        // the default settings, except "class", "individual_filtering" and "use_integration_options"
         $this->options->setOptions(array(
             "display_start" => 0,
             "dom" => "lfrtip", // default, but not used because "use_integration_options" = true
@@ -83,8 +83,8 @@ class PostDatatable extends AbstractDatatableView
             "search_delay" => 0,
             "state_duration" => 7200,
             "stripe_classes" => array(),
-            "responsive" => true,
-            "class" => Style::BOOTSTRAP_3_STYLE,
+            "responsive" => false,
+            "class" => Style::BOOTSTRAP_3_STYLE . " table-condensed",
             "individual_filtering" => true,
             "use_integration_options" => true
         ));
@@ -100,7 +100,7 @@ class PostDatatable extends AbstractDatatableView
                 "title" => "Id",
                 "type" => "",
                 "visible" => true,
-                "width" => "",
+                "width" => "40px",
                 "default" => ""
             ))
             ->add("visible", "boolean", array(
@@ -113,7 +113,7 @@ class PostDatatable extends AbstractDatatableView
                 "title" => "Visible",
                 "type" => "",
                 "visible" => true,
-                "width" => "",
+                "width" => "40px",
                 "true_icon" => "glyphicon glyphicon-ok",
                 "false_icon" => "",
                 "true_label" => "yes",
@@ -130,10 +130,11 @@ class PostDatatable extends AbstractDatatableView
                 "title" => "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> Published",
                 "type" => "",
                 "visible" => true,
-                "width" => ""
+                "width" => "120px"
             ))
             ->add("title", "column", array(
                 "title" => "<span class='glyphicon glyphicon-book' aria-hidden='true'></span> Title",
+                "width" => "120px"
             ))
             ->add('owner', 'virtual', array(
                 'title' => "Your Post"
@@ -151,16 +152,12 @@ class PostDatatable extends AbstractDatatableView
                 "width" => "",
                 "default" => ""
             ))
-            /*
             ->add('comments.title', 'array', array(
                 'title' => "Kommentare",
-                //'visible' => true,
                 "searchable" => false,
                 "orderable" => false,
-                "default" => "default value",
                 "data" => "comments[, ].title",
                 ))
-            */
             ->add(null, "action", array(
                 "title" => "Actions",
                 "start_html" => '<div class="wrapper">',

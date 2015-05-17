@@ -25,8 +25,16 @@ class BlameableListener
     public function prePersist(LifeCycleEventArgs $args)
     {
         $entity = $args->getEntity();
+
         if ($entity instanceof Post || $entity instanceof Comment) {
-            $entity->setAuthorEmail($this->tokenStorage->getToken()->getUser()->getEmail());
+            // is authentication information available?
+            if (null !== $this->tokenStorage->getToken()) {
+                // get User
+                $user = $this->tokenStorage->getToken()->getUser();
+                if (is_object($user)) {
+                    $entity->setAuthorEmail($user->getEmail());
+                }
+            }
         }
     }
 }

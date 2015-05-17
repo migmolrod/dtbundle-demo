@@ -66,6 +66,16 @@ class Comment
      */
     private $publishedAt;
 
+    public function __construct()
+    {
+        $this->publishedAt = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
+
     /**
      * Get id
      *
