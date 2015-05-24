@@ -68,7 +68,7 @@ class PostDatatable extends AbstractDatatableView
             "type" => "GET"
         ));
 
-        // the default settings, except "class", "individual_filtering" and "use_integration_options"
+        // the default settings, except "class", "individual_filtering", individual_filtering_position and "use_integration_options"
         $this->options->setOptions(array(
             "display_start" => 0,
             "dom" => "lfrtip", // default, but not used because "use_integration_options" = true
@@ -86,10 +86,32 @@ class PostDatatable extends AbstractDatatableView
             "responsive" => false,
             "class" => Style::BOOTSTRAP_3_STYLE . " table-condensed",
             "individual_filtering" => true,
+            "individual_filtering_position" => "both",
             "use_integration_options" => true
         ));
 
         $this->columnBuilder
+            ->add(null, "multiselect", array(
+                "start_html" => '<div class="wrapper" id="wrapper">',
+                "end_html" => '</div>',
+                "attributes" => array(
+                    "class" => "testclass",
+                    "name" => "testname",
+                ),
+                "actions" => array(
+                    array(
+                        "route" => "post_bulk_delete",
+                        "label" => "Delete",
+                        "role" => "ROLE_ADMIN",
+                        "icon" => "<i class='fa fa-times'></i>"
+                    ),
+                    array(
+                        "route" => "post_bulk_invisible",
+                        "label" => "Invisible",
+                        "icon" => "<i class='fa fa-eye-slash'></i>",
+                    )
+                )
+            ))
             ->add("id", "column", array(
                 "class" => "",
                 "padding" => "",
@@ -107,9 +129,9 @@ class PostDatatable extends AbstractDatatableView
                 "class" => "",
                 "padding" => "",
                 "name" => "",
-                "orderable" => true,
+                "orderable" => false,
                 "render" => "render_boolean",
-                "searchable" => true,
+                "searchable" => false,
                 "title" => "Visible",
                 "type" => "",
                 "visible" => true,

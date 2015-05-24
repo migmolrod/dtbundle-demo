@@ -56,6 +56,15 @@ class PostController extends Controller
          */
         $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("app.datatable.server_side.post"));
 
+        // Callback example
+        $function = function($qb)
+        {
+            $qb->andWhere("Post.visible = true");
+        };
+
+        // Add callback
+        $datatable->addWhereBuilderCallback($function);
+
         return $datatable->getResponse();
     }
 
