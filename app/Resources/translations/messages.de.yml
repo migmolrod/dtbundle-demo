@@ -1,0 +1,21 @@
+dtbundle: # the bundle name
+    post: # post datatable
+        titles:
+            visible: "Sichtbar"
+            published: "Veröffentlicht"
+            title: "Titel"
+            owner: "Eigentümer"
+            email: "E-Mail"
+            comments: "Kommentare"
+            actions: "Aktionen"
+        actions:
+            delete: "Löschen"
+            invisible: "Nicht sichtbar"
+            show: "Anzeigen"
+            edit: "Ändern"
+        view:
+            created: "erstellt am: "
+        filter:
+            any: "Alle"
+            yes: "Ja"
+            no: "Nein"

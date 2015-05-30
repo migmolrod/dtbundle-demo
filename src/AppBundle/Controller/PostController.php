@@ -63,7 +63,7 @@ class PostController extends Controller
         };
 
         // Add callback
-        $datatable->addWhereBuilderCallback($function);
+        //$datatable->addWhereBuilderCallback($function);
 
         return $datatable->getResponse();
     }
