@@ -54,6 +54,16 @@
                                         </a>
                                     </li>
 
+                                    {% for locale in ['de', 'en'] %}
+                                    <li>
+                                        <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale' : locale})) }}">
+                                            {% if locale == 'en' %}
+                                                English</a>
+                                            {% elseif locale == 'de' %}
+                                                Deutsch</a>
+                                            {% endif %}
+                                    {% endfor %}
+
                                     <li>
                                         <a href="{{ path('fos_user_security_login') }}">
                                             <i class="glyphicon glyphicon-log-in"></i> Login

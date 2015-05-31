@@ -1,10 +1,15 @@
 services:
-    app.listener:
+    app.blameable.listener:
         class: AppBundle\Listener\BlameableListener
         arguments:
             - "@security.token_storage"
         tags:
             - { name: doctrine.event_listener, event: prePersist }
+    app.locale.listener:
+        class: AppBundle\Listener\LocaleListener
+        arguments: ["%kernel.default_locale%"]
+        tags:
+            - { name: kernel.event_subscriber }
     app.form.extension.novalidate:
         class: AppBundle\Form\Extension\NoValidateExtension
         tags:
