@@ -186,16 +186,18 @@ class PostController extends Controller
     /**
      * Finds and displays a Post entity.
      *
-     * @param int $id
+     * @param integer $id
+     * @param Request $request
      *
-     * @Route("/{id}", name="post_show", options={"expose"=true})
      * @Method("GET")
      * @Template(":post:show.html.twig")
      *
      * @return array
      */
-    public function showAction($id)
+    public function showAction($id, Request $request)
     {
+        $request->setLocale($request->getPreferredLanguage(array('en', 'de')));
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AppBundle:Post')->find($id);
@@ -215,17 +217,19 @@ class PostController extends Controller
     /**
      * Displays a form to edit an existing Post entity.
      *
-     * @param int $id
+     * @param integer $id
+     * @param Request $request
      *
-     * @Route("/{id}/edit", name="post_edit", options={"expose"=true})
      * @Method("GET")
      * @Template(":post:edit.html.twig")
      * @Security("has_role('ROLE_USER')")
      *
      * @return array
      */
-    public function editAction($id)
+    public function editAction($id, Request $request)
     {
+        $request->setLocale($request->getPreferredLanguage(array('en', 'de')));
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AppBundle:Post')->find($id);

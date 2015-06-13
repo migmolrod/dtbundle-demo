@@ -2,6 +2,18 @@ locale:
     path: /
     defaults: {_controller: AppBundle:Page:locale}
 
+post_show:
+    path: /post/{id}
+    defaults: {_controller: AppBundle:Post:show}
+    options:
+        expose: true
+
+post_edit:
+    path: /post/{id}/edit
+    defaults: {_controller: AppBundle:Post:edit}
+    options:
+        expose: true
+
 app:
     resource: "@AppBundle/Controller/"
     prefix: /{_locale}

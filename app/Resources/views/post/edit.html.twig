@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block main%}
-    <h1>Post edit</h1>
+    <h1>{{ 'dtbundle.post.actions.edit'|trans({}, 'messages') }}</h1>
 
     {{ form(edit_form) }}
 
