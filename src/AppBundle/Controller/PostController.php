@@ -51,21 +51,28 @@ class PostController extends Controller
      */
     public function indexResultsAction()
     {
-        /**
-         * @var \Sg\DatatablesBundle\Datatable\Data\DatatableData $datatable
-         */
-        $datatable = $this->get("sg_datatables.datatable")->getDatatable($this->get("app.datatable.server_side.post"));
+        $query = $this->get("sg_datatables.query")->getQueryFrom($this->get("app.datatable.server_side.post"));
 
         // Callback example
         $function = function($qb)
         {
-            $qb->andWhere("Post.visible = true");
+            $qb->andWhere("post.visible = true");
         };
 
-        // Add callback
-        //$datatable->addWhereBuilderCallback($function);
+        // Add as WhereAll callback
+        //$query->addWhereAll($function);
 
-        return $datatable->getResponse();
+        // Or add as WhereResult
+        //$query->addWhereResult($function);
+
+        // Or to the query
+        //$query->buildQuery();
+        //$qb = $query->getQuery();
+        //$qb->andWhere("post.visible = true");
+        //$query->setQuery($qb);
+        //return $query->getResponse(false);
+
+        return $query->getResponse();
     }
 
     /**
