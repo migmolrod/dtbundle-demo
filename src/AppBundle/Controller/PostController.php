@@ -36,6 +36,7 @@ class PostController extends Controller
     public function indexAction()
     {
         $datatable = $this->get("app.datatable.server_side.post");
+        $datatable->buildDatatable();
 
         return array(
             "datatable" => $datatable,
@@ -51,7 +52,10 @@ class PostController extends Controller
      */
     public function indexResultsAction()
     {
-        $query = $this->get("sg_datatables.query")->getQueryFrom($this->get("app.datatable.server_side.post"));
+        $datatable = $this->get("app.datatable.server_side.post");
+        $datatable->buildDatatable();
+
+        $query = $this->get("sg_datatables.query")->getQueryFrom($datatable);
 
         // Callback example
         $function = function($qb)
@@ -104,6 +108,7 @@ class PostController extends Controller
         $serializer = new Serializer($normalizers, $encoders);
 
         $datatable = $this->get("app.datatable.client_side.post");
+        $datatable->buildDatatable();
         $datatable->setData($serializer->serialize($results, "json"));
 
         return array(

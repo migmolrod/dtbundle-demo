@@ -15,7 +15,7 @@ class PostClientSideDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable()
     {
         // the default settings, except 'scroll_x' and 'server_side'
         $this->features->setFeatures(array(
@@ -54,7 +54,7 @@ class PostClientSideDatatable extends AbstractDatatableView
             'responsive' => false,
             'class' => Style::BOOTSTRAP_3_STYLE . ' table-condensed',
             'individual_filtering' => true,
-            'individual_filtering_position' => 'both',
+            'individual_filtering_position' => 'foot',
             'use_integration_options' => true
         ));
 

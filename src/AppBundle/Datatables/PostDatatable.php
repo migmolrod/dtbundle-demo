@@ -42,7 +42,7 @@ class PostDatatable extends AbstractDatatableView
     /**
      * {@inheritdoc}
      */
-    public function buildDatatableView()
+    public function buildDatatable()
     {
         // the default settings, except 'scroll_x'
         $this->features->setFeatures(array(
