@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class PageController
@@ -13,20 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class PageController extends Controller
 {
-    /**
-     * Locale action.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function localeAction(Request $request)
-    {
-        $request->setLocale($request->getPreferredLanguage(array('en', 'de')));
-
-        return $this->redirect($this->generateUrl('homepage'));
-    }
-
     /**
      * Home action.
      *

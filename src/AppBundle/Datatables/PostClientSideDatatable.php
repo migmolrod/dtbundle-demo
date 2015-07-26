@@ -17,7 +17,6 @@ class PostClientSideDatatable extends AbstractDatatableView
      */
     public function buildDatatable()
     {
-        // the default settings, except 'scroll_x' and 'server_side'
         $this->features->setFeatures(array(
             'auto_width' => true,
             'defer_render' => false,
@@ -27,15 +26,14 @@ class PostClientSideDatatable extends AbstractDatatableView
             'ordering' => true,
             'paging' => true,
             'processing' => true,
-            'scroll_x' => true,
+            'scroll_x' => true, // default: false
             'scroll_y' => '',
             'searching' => true,
-            'server_side' => false,
+            'server_side' => false, // default: true
             'state_save' => false,
             'delay' => 0
         ));
 
-        // the default settings, except 'class', 'individual_filtering', individual_filtering_position and 'use_integration_options'
         $this->options->setOptions(array(
             'display_start' => 0,
             'defer_loading' => -1,
@@ -52,10 +50,10 @@ class PostClientSideDatatable extends AbstractDatatableView
             'state_duration' => 7200,
             'stripe_classes' => array(),
             'responsive' => false,
-            'class' => Style::BOOTSTRAP_3_STYLE . ' table-condensed',
-            'individual_filtering' => true,
-            'individual_filtering_position' => 'foot',
-            'use_integration_options' => true
+            'class' => Style::BOOTSTRAP_3_STYLE . ' table-condensed', // default: Style::BASE_STYLE
+            'individual_filtering' => true, // default: false
+            'individual_filtering_position' => 'both', // default: 'foot'
+            'use_integration_options' => true // default: false
         ));
 
         $users = $this->em->getRepository('AppBundle:User')->findAll();
@@ -71,23 +69,24 @@ class PostClientSideDatatable extends AbstractDatatableView
                 'actions' => array(
                     array(
                         'route' => 'post_bulk_delete',
-                        'label' => $this->translator->trans('dtbundle.post.actions.delete'),
-                        'role' => 'ROLE_ADMIN',
+                        'label' => 'Delete',
+                        'role' => 'ROLE_USER',
                         'icon' => 'fa fa-times',
                         'attributes' => array(
                             'rel' => 'tooltip',
-                            'title' => $this->translator->trans('dtbundle.post.actions.delete'),
+                            'title' => 'Delete',
                             'class' => 'btn btn-danger btn-xs',
                             'role' => 'button'
                         ),
                     ),
                     array(
                         'route' => 'post_bulk_invisible',
-                        'label' => $this->translator->trans('dtbundle.post.actions.invisible'),
+                        'label' => 'Invisible',
+                        'role' => 'ROLE_USER',
                         'icon' => 'fa fa-eye-slash',
                         'attributes' => array(
                             'rel' => 'tooltip',
-                            'title' => $this->translator->trans('dtbundle.post.actions.invisible'),
+                            'title' => 'Invisible',
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
@@ -105,6 +104,11 @@ class PostClientSideDatatable extends AbstractDatatableView
                 'type' => '',
                 'visible' => true,
                 'width' => '40px',
+                'search_type' => 'like',
+                'filter_type' => 'text',
+                'filter_options' => array(),
+                'filter_property' => '',
+                'filter_search_column' => '',
                 'default' => ''
             ))
             ->add('visible', 'boolean', array(
@@ -114,7 +118,7 @@ class PostClientSideDatatable extends AbstractDatatableView
                 'orderable' => true,
                 'render' => 'render_boolean',
                 'searchable' => true,
-                'title' => $this->translator->trans('dtbundle.post.titles.visible'),
+                'title' => 'Visible',
                 'type' => '',
                 'visible' => true,
                 'width' => '50px',
@@ -124,7 +128,9 @@ class PostClientSideDatatable extends AbstractDatatableView
                 'false_label' => 'no',
                 'search_type' => 'eq',
                 'filter_type' => 'select',
-                'filter_options' => ['' => $this->translator->trans('dtbundle.post.filter.any'), 'yes' => $this->translator->trans('dtbundle.post.filter.yes'), 'no' => $this->translator->trans('dtbundle.post.filter.no')],
+                'filter_options' => ['' => 'Any', 'yes' => 'Yes', 'no' => 'No'],
+                'filter_property' => '',
+                'filter_search_column' => '',
             ))
             ->add('publishedAt', 'datetime', array(
                 'class' => '',
@@ -132,44 +138,39 @@ class PostClientSideDatatable extends AbstractDatatableView
                 'name' => 'daterange',
                 'orderable' => true,
                 'render' => 'render_datetime',
-                'date_format' => 'lll',
                 'searchable' => true,
-                'title' => "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> " . $this->translator->trans('dtbundle.post.titles.published'),
+                'title' => "<span class='glyphicon glyphicon-calendar' aria-hidden='true'></span> Published",
                 'type' => '',
                 'visible' => true,
-                'width' => '120px'
+                'width' => '120px',
+                'search_type' => 'like',
+                'filter_type' => 'text',
+                'filter_options' => array(),
+                'filter_property' => '',
+                'filter_search_column' => '',
+                'date_format' => 'lll',
             ))
             ->add('title', 'column', array(
-                'title' => "<span class='glyphicon glyphicon-book' aria-hidden='true'></span> " . $this->translator->trans('dtbundle.post.titles.title'),
+                'title' => "<span class='glyphicon glyphicon-book' aria-hidden='true'></span> Title",
                 'width' => '120px',
             ))
             ->add('owner', 'virtual', array(
-                'title' => $this->translator->trans('dtbundle.post.titles.owner')
+                'title' => 'Owner'
             ))
             ->add('authorEmail', 'column', array(
-                'class' => '',
-                'padding' => '',
-                'name' => '',
-                'orderable' => true,
-                'render' => null,
-                'searchable' => true,
-                'title' => "<span class='glyphicon glyphicon-user' aria-hidden='true'></span> " . $this->translator->trans('dtbundle.post.titles.email'),
-                'type' => '',
-                'visible' => true,
-                'width' => '',
-                'default' => '',
+                'title' => "<span class='glyphicon glyphicon-user' aria-hidden='true'></span> Email",
                 'filter_type' => 'select',
-                'filter_options' => ['' => $this->translator->trans('dtbundle.post.filter.any')] + $this->getCollectionAsOptionsArray($users, 'email', 'username'),
+                'filter_options' => ['' => 'Any'] + $this->getCollectionAsOptionsArray($users, 'email', 'username'),
                 'filter_property' => 'authorEmail',
             ))
             ->add('comments.title', 'array', array(
-                'title' => $this->translator->trans('dtbundle.post.titles.comments'),
+                'title' => 'Comments',
                 'searchable' => false,
                 'orderable' => false,
                 'data' => 'comments[, ].title',
             ))
             ->add(null, 'action', array(
-                'title' => $this->translator->trans('dtbundle.post.titles.actions'),
+                'title' => 'Actions',
                 'start_html' => '<div class="wrapper">',
                 'end_html' => '</div>',
                 'actions' => array(
@@ -178,11 +179,11 @@ class PostClientSideDatatable extends AbstractDatatableView
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
-                        'label' => $this->translator->trans('dtbundle.post.actions.show'),
+                        'label' => 'Show',
                         'icon' => 'glyphicon glyphicon-eye-open',
                         'attributes' => array(
                             'rel' => 'tooltip',
-                            'title' => $this->translator->trans('dtbundle.post.actions.edit'),
+                            'title' => 'Show',
                             'class' => 'btn btn-default btn-xs',
                             'role' => 'button'
                         ),
@@ -194,11 +195,11 @@ class PostClientSideDatatable extends AbstractDatatableView
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
-                        'label' => $this->translator->trans('dtbundle.post.actions.edit'),
+                        'label' => 'Edit',
                         'icon' => 'glyphicon glyphicon-edit',
                         'attributes' => array(
                             'rel' => 'tooltip',
-                            'title' => $this->translator->trans('dtbundle.post.actions.edit'),
+                            'title' => 'Edit',
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),

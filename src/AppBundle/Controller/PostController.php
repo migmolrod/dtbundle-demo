@@ -35,11 +35,11 @@ class PostController extends Controller
      */
     public function indexAction()
     {
-        $datatable = $this->get("app.datatable.server_side.post");
+        $datatable = $this->get('app.datatable.server_side.post');
         $datatable->buildDatatable();
 
         return array(
-            "datatable" => $datatable,
+            'datatable' => $datatable
         );
     }
 
@@ -52,10 +52,10 @@ class PostController extends Controller
      */
     public function indexResultsAction()
     {
-        $datatable = $this->get("app.datatable.server_side.post");
+        $datatable = $this->get('app.datatable.server_side.post');
         $datatable->buildDatatable();
 
-        $query = $this->get("sg_datatables.query")->getQueryFrom($datatable);
+        $query = $this->get('sg_datatables.query')->getQueryFrom($datatable);
 
         // Callback example
         $function = function($qb)
@@ -90,29 +90,29 @@ class PostController extends Controller
      */
     public function clientSideIndexAction()
     {
-        $repository = $this->getDoctrine()->getRepository("AppBundle:Post");
+        $repository = $this->getDoctrine()->getRepository('AppBundle:Post');
 
-        $query = $repository->createQueryBuilder("p")
-            ->select("p, c")
-            ->join("p.comments", "c")
+        $query = $repository->createQueryBuilder('p')
+            ->select('p, c')
+            ->join('p.comments', 'c')
             ->getQuery();
 
         $results = $query->getArrayResult();
 
         foreach ($results as $key => $value) {
-            $results[$key]["owner"] = "test";
+            $results[$key]['owner'] = 'test';
         }
 
         $encoders = array(new JsonEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
 
-        $datatable = $this->get("app.datatable.client_side.post");
+        $datatable = $this->get('app.datatable.client_side.post');
         $datatable->buildDatatable();
-        $datatable->setData($serializer->serialize($results, "json"));
+        $datatable->setData($serializer->serialize($results, 'json'));
 
         return array(
-            "datatable" => $datatable,
+            'datatable' => $datatable,
         );
     }
 
@@ -192,19 +192,16 @@ class PostController extends Controller
      * Finds and displays a Post entity.
      *
      * @param integer $id
-     * @param Request $request
      *
+     * @Route("/{id}", name="post_show", options={"expose"=true})
      * @Method("GET")
      * @Template(":post:show.html.twig")
      *
      * @return array
      */
-    public function showAction($id, Request $request)
+    public function showAction($id)
     {
-        $request->setLocale($request->getPreferredLanguage(array('en', 'de')));
-
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppBundle:Post')->find($id);
 
         if (!$entity) {
@@ -223,20 +220,17 @@ class PostController extends Controller
      * Displays a form to edit an existing Post entity.
      *
      * @param integer $id
-     * @param Request $request
      *
+     * @Route("/{id}/edit", name="post_edit", options={"expose"=true})
      * @Method("GET")
      * @Template(":post:edit.html.twig")
      * @Security("has_role('ROLE_USER')")
      *
      * @return array
      */
-    public function editAction($id, Request $request)
+    public function editAction($id)
     {
-        $request->setLocale($request->getPreferredLanguage(array('en', 'de')));
-
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AppBundle:Post')->find($id);
 
         if (!$entity) {
@@ -347,9 +341,9 @@ class PostController extends Controller
     /**
      * Creates a form to delete a Post entity by id.
      *
-     * @param mixed $id The entity id
+     * @param integer $id
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\Form
      */
     private function createDeleteForm($id)
     {

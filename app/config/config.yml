@@ -79,3 +79,15 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\User
+
+# SgDatatablesBundle
+sg_datatables:
+    site:
+        title: Backend
+        login_route: fos_user_security_login
+        logout_route: fos_user_security_logout
+    global_prefix: backend
+    routes:
+        user: user_datatable
+    fields:
+        - { route: user, edit: [username, email, enabled, plainPassword], new: [username, email, enabled, plainPassword], show: [username, email, enabled] }

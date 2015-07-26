@@ -25,7 +25,7 @@ class BulkActionsController extends Controller
      *
      * @Route("/bulk/delete", name="post_bulk_delete")
      * @Method("POST")
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return Response
      */
@@ -59,6 +59,7 @@ class BulkActionsController extends Controller
      *
      * @Route("/bulk/invisible", name="post_bulk_invisible")
      * @Method("POST")
+     * @Security("has_role('ROLE_USER')")
      *
      * @return Response
      */

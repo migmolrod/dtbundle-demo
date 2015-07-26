@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}SgDatatablesBundle Demo Application{% endblock %}</title>
+        <title>{% block title %}SgDatatablesBundle Demo - Frontend{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" >
@@ -30,7 +30,7 @@
                     <div class="container">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="{{ path('homepage') }}">
-                                SgDatatablesBundle Demo Application
+                                SgDatatablesBundle Demo - Frontend
                             </a>
                             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                 <span class="sr-only">Toggle navigation</span>
@@ -53,28 +53,18 @@
                                             <i class="glyphicon glyphicon-th-list"></i> All Posts (client-side)
                                         </a>
                                     </li>
-
-                                    {% for locale in ['de', 'en'] %}
-                                    <li>
-                                        <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale' : locale})) }}">
-                                            {% if locale == 'en' %}
-                                                English</a>
-                                            {% elseif locale == 'de' %}
-                                                Deutsch</a>
-                                            {% endif %}
-                                    {% endfor %}
-
-                                    <li>
-                                        <a href="{{ path('fos_user_security_login') }}">
-                                            <i class="glyphicon glyphicon-log-in"></i> Login
-                                        </a>
-                                    </li>
                                 {% endblock %}
 
                                 {% if app.user %}
                                     <li>
                                         <a href="{{ path('fos_user_security_logout') }}">
                                             <i class="glyphicon glyphicon-log-out"></i> Logout
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="{{ path('fos_user_security_login') }}">
+                                            <i class="glyphicon glyphicon-log-in"></i> Login
                                         </a>
                                     </li>
                                 {% endif %}

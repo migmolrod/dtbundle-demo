@@ -1,5 +1,5 @@
 <div class="well">
-    {{ entity.title }} {{ "dtbundle.post.view.created"|trans }} {{ entity.publishedAt|date }}
+    {{ entity.title }} created at: {{ entity.publishedAt|date }}
     <hr />
     <a href="{{ path('fos_user_security_login') }}">Login</a>
 </div>
